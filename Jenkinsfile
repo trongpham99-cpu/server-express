@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'Node 14' // Use the name you configured in Jenkins
-    }
-
     environment {
         DOCKER_IMAGE = 'my-node-app:latest'
     }
