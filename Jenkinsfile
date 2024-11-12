@@ -23,20 +23,6 @@ pipeline {
             }
         }
 
-        // Uncomment if you have tests to run
-        // stage('Run Tests') {
-        //     steps {
-        //         sh 'npm test'
-        //     }
-        // }
-
-        stage('Build Application') {
-            steps {
-                // Nếu không có build cụ thể, bạn có thể bỏ qua lệnh này hoặc chạy một lệnh giả
-                // sh 'npm run build'
-            }
-        }
-
         stage('Deploy Application') {
             steps {
                 // Dừng các ứng dụng đang chạy trên cổng 3000 (nếu có) trước khi khởi động lại
