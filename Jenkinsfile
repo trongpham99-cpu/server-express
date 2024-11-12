@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        // Uncomment if you want to run tests
+        // Uncomment if you have tests to run
         // stage('Run Tests') {
         //     steps {
         //         sh 'npm test'
@@ -32,14 +32,17 @@ pipeline {
 
         stage('Build Application') {
             steps {
-                sh 'npm run build' // Hoặc lệnh build phù hợp với dự án của bạn
+                // Nếu không có build cụ thể, bạn có thể bỏ qua lệnh này hoặc chạy một lệnh giả
+                // sh 'npm run build'
             }
         }
 
         stage('Deploy Application') {
             steps {
-                // Thực hiện lệnh khởi động ứng dụng, ví dụ với Node.js
-                sh 'npm start' // Hoặc lệnh deploy phù hợp
+                // Dừng các ứng dụng đang chạy trên cổng 3000 (nếu có) trước khi khởi động lại
+                sh "lsof -ti:3000 | xargs kill -9 || true"
+                // Khởi động ứng dụng
+                sh 'nohup npm start &'
             }
         }
     }
