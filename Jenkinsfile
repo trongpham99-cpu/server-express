@@ -3,11 +3,9 @@ pipeline {
 
     tools {
         nodejs 'nodejs'
-        dockerTool 'docker'
     }
 
     environment {
-        DOCKER_IMAGE = 'trongpham99/server-express'
         TELEGRAM_BOT_TOKEN = '7939301771:AAEw4T70jSq7d6JzamJJmPNmBigcExKw3Pk'
         TELEGRAM_CHAT_ID = '-1002394833136'
     }
@@ -25,30 +23,23 @@ pipeline {
             }
         }
 
+        // Uncomment if you want to run tests
         // stage('Run Tests') {
         //     steps {
         //         sh 'npm test'
         //     }
         // }
-        
-        stage('Build Docker Image') {
+
+        stage('Build Application') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
+                sh 'npm run build' // Hoặc lệnh build phù hợp với dự án của bạn
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Deploy Application') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
-                    sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh "docker run -d -p 3000:3000 ${DOCKER_IMAGE}:${BUILD_NUMBER}"
+                // Thực hiện lệnh khởi động ứng dụng, ví dụ với Node.js
+                sh 'npm start' // Hoặc lệnh deploy phù hợp
             }
         }
     }
