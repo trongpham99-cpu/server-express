@@ -1,26 +1,33 @@
 pipeline {
     agent any
 
-    tools {
-        dockerTool 'docker'
+    environment {
+        NODE_ENV = 'production'
     }
 
-    environment {
-        DOCKER_IMAGE = 'my-node-app:latest'
+    tools {
+        nodejs 'nodejs'
     }
 
     stages {
-        stage('Docker Build') {
+        stage('Install Dependencies') {
             steps {
                 script {
-                    sh 'docker build -t $DOCKER_IMAGE .'
+                    sh 'npm install'
                 }
             }
         }
-        stage('Docker Run') {
+        stage('Run Tests') {
             steps {
                 script {
-                    sh 'docker run -d -p 3000:3000 $DOCKER_IMAGE'
+                    sh 'npm test'
+                }
+            }
+        }
+        stage('Start Application') {
+            steps {
+                script {
+                    sh 'npm start'
                 }
             }
         }
